@@ -1,0 +1,92 @@
+@import domain.entity.ProjectProperty
+@(accessToken: Option[twitter4j.auth.AccessToken], projectProperty: ProjectProperty, weekGoal: Long, lastWeekSumTime: String, lastWeekGoalTime: String)
+
+@main("projectConf"){
+  <div class="container">
+      @if(accessToken.isDefined){
+      <div class="mb-7">
+          <form action="/updateProject" method="post" class="mt-4">
+              <div class="form-group mb-4">
+                  <label for="projectNameConf">プロジェクト名</label>
+                  <input class="form-control" type="text" name="projectName" id="projectNameConf" value="@projectProperty.projectName">
+              </div>
+              <div class="form-group mb-4">
+                  <label fpr="weekGoalConf">目標時間</label>
+                  <select class="form-control" id="weekGoalConf" name="weekGoalHour">
+                      <option value="@weekGoal" selected="selected">@weekGoal 時間</option>
+                      <option value="1">1 時間</option>
+                      <option value="2">2 時間</option>
+                      <option value="3">3 時間</option>
+                      <option value="4">4 時間</option>
+                      <option value="5">5 時間</option>
+                      <option value="6">6 時間</option>
+                      <option value="7">7 時間</option>
+                      <option value="8">8 時間</option>
+                      <option value="9">9 時間</option>
+                      <option value="10">10 時間</option>
+                      <option value="11">11 時間</option>
+                      <option value="12">12 時間</option>
+                      <option value="13">13 時間</option>
+                      <option value="14">14 時間</option>
+                      <option value="15">15 時間</option>
+                      <option value="16">16 時間</option>
+                      <option value="17">17 時間</option>
+                      <option value="18">18 時間</option>
+                      <option value="19">19 時間</option>
+                      <option value="20">20 時間</option>
+                      <option value="21">21 時間</option>
+                      <option value="22">22 時間</option>
+                      <option value="23">23 時間</option>
+                      <option value="24">24 時間</option>
+                      <option value="25">25 時間</option>
+                      <option value="26">26 時間</option>
+                      <option value="27">27 時間</option>
+                      <option value="28">28 時間</option>
+                      <option value="29">29 時間</option>
+                      <option value="30">30 時間</option>
+                  </select>
+                  <!--<input type="text" name="weekGoalHour" value="@weekGoal">時間-->
+              </div>
+              <input type="hidden" name="projectId" value="@projectProperty.projectId">
+              <button type="submit" class="btn btn-primary">プロジェクト情報を保存</button>
+          </form>
+          <div class="mt-3">
+              <form action="/deleteProject" method="post" class="text-right">
+                  <input type="hidden" name="projectId" value="@projectProperty.projectId">
+                  <button type="submit" class="btn btn-danger">プロジェクトを削除</button>
+                  <p>＊この操作は取り消せません</p>
+              </form>
+          </div>
+      </div>
+      <hr>
+      <div class="mt-5">
+          <p>＜ 先週の結果 ＞</p>
+          <table class="table table-bordered">
+              <thead class="thead-light">
+              <tr>
+                  <th>
+                      累計時間
+                  </th>
+                  <th>
+                      目標時間
+                  </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                  <td>
+                      @lastWeekSumTime
+                  </td>
+                  <td>
+                      @lastWeekGoalTime
+                  </td>
+              </tr>
+              </tbody>
+          </table>
+      </div>
+      } else {
+      <h4 class="ml-5 mt-5">ログインしていないユーザーです</h4>
+      <a href="/login" class="ml-5">twitterでログイン</a>
+      }
+  </div>
+}

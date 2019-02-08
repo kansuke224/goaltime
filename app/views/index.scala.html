@@ -1,0 +1,261 @@
+@import domain.entity.ProjectProperty
+@(accessToken: Option[twitter4j.auth.AccessToken], userName: String, projectList: List[ProjectProperty], startTimeArr: Array[String], weekSumArr: Array[String], weekGoalArr: Array[String], archivedList: List[ProjectProperty], commentContentList: List[Array[String]], commentUserList: List[Array[String]])
+
+@main("goaltime") {
+<div class="container">
+  <div class="row p-3 bg-light">
+    <div class="col-md-9">
+      <div class="page-header">
+        <div>
+          <h1>
+            Goaltime　<small>目標を可視化する</small>
+          </h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-center">
+        @if(accessToken.isEmpty) {
+        <a class="btn btn-primary" href="/login">ログイン</a>
+        } else {
+        <p class="">user: @userName</p>
+        <a class="btn btn-primary" href="/logout">ログアウト</a>
+        }
+      </div>
+    </div>
+  </div>
+  @if(accessToken.isDefined) {
+  <div class="row">
+    <div class="col-md-12 p-3">
+      <div>
+        <a class="btn btn-outline-info mb-3" href="/new">新規プロジェクト作成</a>
+      </div>
+      @if(projectList.length == 0) {
+      <div style="height: 100px">
+        <p>プロジェクトを作成してください</p>
+      </div>
+      } else {
+        <table id="projectTable" class="table table-bordered" data-start-time-array='["@startTimeArr(0)", "@startTimeArr(1)", "@startTimeArr(2)", "@startTimeArr(3)", "@startTimeArr(4)", "@startTimeArr(5)", "@startTimeArr(6)", "@startTimeArr(7)", "@startTimeArr(8)", "@startTimeArr(9)"]'>
+          <thead class="thead-light">
+          <tr>
+            <th class="text-center text-info">
+              プロジェクト
+            </th>
+            <th class="text-center text-info">
+              累計(月 ~ 日)
+            </th>
+            <th class="text-center text-info">
+              目標まであと...
+            </th>
+            <th class="text-center text-info">
+              START/STOP
+            </th>
+            <th>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          @if(projectList.length <= 10){
+          @for(i<-0 until projectList.length){
+          <tr class="table-row" id="@i">
+            <td class="text-center  font-weight-bold">
+              @projectList(i).projectName
+            </td>
+            <td class="text-center" style="font-size: 20px">
+              @weekSumArr(i)
+            </td>
+            <td class="text-center" style="font-size: 20px">
+              @if((projectList(i).weekGoal - projectList(i).weekSum) <= 0){
+              <div class="text-info">
+                達成済みです！
+              </div>
+              } else {
+              @weekGoalArr(i)
+              }
+            </td>
+            <td>
+              <p class="count-time text-center" style="font-size: 20px">
+                0：00：00
+              </p>
+              <div class="text-center">
+                <div class="d-inline-block">
+                  <form action="/startProject" method="post">
+                    <input type="hidden" name="projectId" value="@projectList(i).projectId">
+                    <button type="submit" class="btn btn-outline-success start-button">start</button>
+                  </form>
+                </div>
+                <div class="d-inline-block">
+                  <form action="/stopProject" method="post">
+                    <input type="hidden" name="projectId" value="@projectList(i).projectId">
+                    <button type="submit" class="btn btn-outline-danger">stop</button>
+                  </form>
+                </div>
+              </div>
+            </td>
+            <td class="text-center">
+              <form action="/projectConf" method="post">
+                <input type="hidden" name="projectId" value="@projectList(i).projectId">
+                <button type="submit" class="btn btn-info">設定ページ</button>
+              </form>
+            </td>
+          </tr>
+          }
+          } else {
+          @for(i <- 0 until 10) {
+          <tr class="table-row" id="@i">
+            <td class="text-center  font-weight-bold">
+              @projectList(i).projectName
+            </td>
+            <td class="text-center" style="font-size: 20px">
+              @weekSumArr(i)
+            </td>
+            <td class="text-center" style="font-size: 20px">
+              @if((projectList(i).weekGoal - projectList(i).weekSum) < 0){
+                <div class="text-success">
+                  達成済みです！
+                </div>
+              } else {
+              @weekGoalArr(i)
+              }
+            </td>
+            <td>
+              <p class="count-time text-center" style="font-size: 20px">
+                0：00：00
+              </p>
+              <div class="text-center">
+                <div class="d-inline-block">
+                  <form action="/startProject" method="post">
+                    <input type="hidden" name="projectId" value="@projectList(i).projectId">
+                    <button type="submit" class="btn btn-outline-success start-button">start</button>
+                  </form>
+                </div>
+                <div class="d-inline-block">
+                  <form action="/stopProject" method="post">
+                    <input type="hidden" name="projectId" value="@projectList(i).projectId">
+                    <button type="submit" class="btn btn-outline-danger">stop</button>
+                  </form>
+                </div>
+              </div>
+            </td>
+            <td class="text-center">
+              <form action="/projectConf" method="post">
+                <input type="hidden" name="projectId" value="@projectList(i).projectId">
+                <button type="submit" class="btn btn-info">設定ページ</button>
+              </form>
+            </td>
+          </tr>
+          }
+          }
+          </tbody>
+        </table>
+        <div>
+          <p class="text-right">プロジェクトは10個まで作成できます</p>
+        </div>
+      }
+    </div>
+  </div>
+  } else {
+  <div style="height: 300px" class="pt-5 text-center">
+    <h3>Twitterでログインをして<br>goaltimeで時間を管理しましょう</h3>
+  </div>
+  }
+  <div class="bg-info">
+    <div class="m-4">
+      @if(accessToken.isDefined){
+      <a href="/secondIndex"><button class="btn mt-4">一時的にtwiiter相互フォローの人のみを表示</button></a>
+      <a href="/"><button class="btn mt-4">制限なく表示</button></a>
+      }
+    </div>
+    @if(archivedList.length == 0) {
+    <div class="bg-info p-3">
+      <div class="col-md-12">
+        <div class="card m-3">
+          <h5 class="card-header">
+            プロジェクト達成の投稿がありません
+          </h5>
+          <div class="card-body">
+            <p class="card-text">
+
+            </p>
+          </div>
+          <div class="card-footer">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    } else if(archivedList.length <= 50){
+      @for(i <- 0 until archivedList.length){
+      <div class="bg-info p-3">
+        <div class="card m-3">
+          <h5 class="card-header">
+            user: @archivedList(i).userName
+          </h5>
+          <div class="card-body">
+            <p class="card-text">
+              今週の プロジェクト名: @archivedList(i).projectName を達成しました
+            </p>
+          </div>
+          <div class="card-footer">
+            <div class="">
+              @for(j <- 1 until commentUserList(i).length){
+              @commentUserList(i)(j): @commentContentList(i)(j)<br>
+              }
+            </div>
+            @if(accessToken.isDefined){
+            <div class="mt-2">
+              <form action="comment" method="post">
+                <div class="form-group">
+                  <label class="">コメント</label>
+                  <input type="text" name="comment" class="form-control" value="コメント">
+                </div>
+                <input type="hidden" name="commentUser" value="@userName">
+                <input type="hidden" name="projectId" value="@archivedList(i).projectId">
+                <button type="submit" class="btn btn-secondary float-right">コメントを送信する</button>
+              </form>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      }
+    } else {
+      @for(i <- 0 until 51){
+      <div class="bg-info p-3">
+        <div class="card m-3">
+          <h5 class="card-header">
+            user: @archivedList(i).userName
+          </h5>
+          <div class="card-body">
+            <p class="card-text">
+              今週の プロジェクト名: @archivedList(i).projectName を達成しました
+            </p>
+          </div>
+          <div class="card-footer">
+            <div class="">
+              @for(j <- 1 until commentUserList(i).length){
+              @commentUserList(i)(j): @commentContentList(i)(j)<br>
+              }
+            </div>
+            @if(accessToken.isDefined){
+            <div class="mt-2">
+              <form action="comment" method="post">
+                <div class="form-group">
+                  <label class="">コメント</label>
+                  <input type="text" name="comment" class="form-control" value="コメント">
+                </div>
+                <input type="hidden" name="commentUser" value="@userName">
+                <input type="hidden" name="projectId" value="@archivedList(i).projectId">
+                <button type="submit" class="btn btn-secondary float-right">コメントを送信する</button>
+              </form>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      }
+    }
+  </div>
+</div>
+}
+

@@ -1,0 +1,75 @@
+@(accessToken: Option[twitter4j.auth.AccessToken])
+
+@main("new project") {
+  @if(accessToken.isDefined) {
+  <div class="container">
+        <form action="/projects" method="post">
+          <div class="form-group">
+            <label for="projectName">
+              プロジェクト名
+            </label>
+            <input type="text" class="form-control" name="projectName" id="projectName"/>
+          </div>
+          <div class="form-group">
+            <label for="weekGoal">
+              目標時間(月 ~ 日)
+            </label>
+            <select class="form-control" id="weekGoal" name="weekGoal">
+              <option value="31">31秒</option>
+              <option value="1" selected="selected">1 時間</option>
+              <option value="2">2 時間</option>
+              <option value="3">3 時間</option>
+              <option value="4">4 時間</option>
+              <option value="5">5 時間</option>
+              <option value="6">6 時間</option>
+              <option value="7">7 時間</option>
+              <option value="8">8 時間</option>
+              <option value="9">9 時間</option>
+              <option value="10">10 時間</option>
+              <option value="11">11 時間</option>
+              <option value="12">12 時間</option>
+              <option value="13">13 時間</option>
+              <option value="14">14 時間</option>
+              <option value="15">15 時間</option>
+              <option value="16">16 時間</option>
+              <option value="17">17 時間</option>
+              <option value="18">18 時間</option>
+              <option value="19">19 時間</option>
+              <option value="20">20 時間</option>
+              <option value="21">21 時間</option>
+              <option value="22">22 時間</option>
+              <option value="23">23 時間</option>
+              <option value="24">24 時間</option>
+              <option value="25">25 時間</option>
+              <option value="26">26 時間</option>
+              <option value="27">27 時間</option>
+              <option value="28">28 時間</option>
+              <option value="29">29 時間</option>
+              <option value="30">30 時間</option>
+            </select>
+
+            <!--<input type="text" name="weekGoal" class="form-control" id="weekGoal"/>-->
+          </div>
+          <button type="submit" class="btn btn-primary">
+            プロジェクトを作成
+          </button>
+        </form>
+  </div>
+
+  <!--<form action="/projects" method="post">-->
+    <!--<div>-->
+      <!--<h5>プロジェクト名</h5>-->
+      <!--<input type="text" name="projectName">-->
+    <!--</div>-->
+    <!--<div>-->
+      <!--<h5>目標時間</h5>-->
+      <!--<input type="text" name="weekGoal">時間-->
+    <!--</div>-->
+    <!--<button type="submit">プロジェクトを作成</button>-->
+  <!--</form>-->
+  } else {
+  <h4 class="ml-5 mt-5">ログインしていないユーザーです</h4>
+  <a href="/login" class="ml-5">twitterでログイン</a>
+  }
+
+}
