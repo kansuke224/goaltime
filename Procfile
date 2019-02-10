@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/goaltime -Dhttp.port=${PORT} -Dplay.crypto.secret=${APPLICATION_SECRET}
+web: target/universal/stage/bin/goaltime -Dhttp.port=${PORT} -DapplyEvolutions.default=true -Ddb.default.driver=org.postgresql.Driver -Ddb.default.url=${DATABASE_URL}
