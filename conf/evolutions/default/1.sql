@@ -1,24 +1,23 @@
-# picture_properties schema
+# project_properties schema
 
 # --- !Ups
 
-create table project_properties(
-project_id varchar(255) not null,
-twitter_id bigint(20) not null,
-project_name varchar(255) not null,
-week_goal bigint(20) not null,
-week_sum bigint(20) not null,
-created_time bigint(20) not null,
-updated_time varchar(255) not null,
-start_time bigint(20) not null,
-last_week_sum bigint(20) not null,
-last_week_goal bigint(20) not null,
-user_name varchar(255) not null,
+create table project_properties (
+project_id TEXT not null,
+twitter_id bigint not null,
+project_name TEXT not null,
+week_goal bigint not null,
+week_sum bigint not null,
+created_time bigint not null,
+updated_time TEXT not null,
+start_time bigint not null,
+last_week_sum bigint not null,
+last_week_goal bigint not null,
+user_name TEXT not null,
 comment_user text not null,
 comment_content text not null,
-archived_time bigint(20) not null,
-index(twitter_id)
-) engine=innodb charset=utf8mb4;
+archived_time bigint not null
+);
 
 # --- !Downs
 

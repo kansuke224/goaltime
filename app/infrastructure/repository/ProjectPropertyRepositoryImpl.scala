@@ -56,7 +56,7 @@ class ProjectPropertyRepositoryImpl extends ProjectPropertyRepository {
       db localTx { implicit session =>
 
         val sql =
-          sql"SELECT * FROM project_properties WHERE twitter_id = ${twitterId}"
+          sql"SELECT * FROM project_properties WHERE twitter_id = ${twitterId} ORDER BY created_time ASC"
         sql.map(resultSettoProjectProperty).list().apply()
       }
     }

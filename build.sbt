@@ -18,6 +18,10 @@ libraryDependencies += "org.scalikejdbc" %% "scalikejdbc"  % "3.0.2"
 libraryDependencies += "org.scalikejdbc" %% "scalikejdbc-config" % "3.0.2"
 libraryDependencies += "org.scalikejdbc" %% "scalikejdbc-play-dbapi-adapter" % "2.6.0-scalikejdbc-3.0"
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.36"
+libraryDependencies += "org.postgresql" % "postgresql" % "42.1.4"
+//libraryDependencies += "postgresql" % "postgresql" % "9.1-901.jdbc4"
+
+
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "jp.ed.nnn.controllers._"

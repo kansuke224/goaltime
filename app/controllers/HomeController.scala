@@ -44,7 +44,7 @@ class HomeController @Inject()(val cache: SyncCacheApi,
       val twitterId = user.getId
       // weekSumをリセットする処理
       val dat = LocalDate.now()
-//      val dat = LocalDate.of(2019, 2, 20)
+//      val dat = LocalDate.of(2019, 2, 28)
       val week = dat.getDayOfWeek()
       val preProjectList = projectPropertyRepository.find(twitterId)
       if (preProjectList.length != 0) {
